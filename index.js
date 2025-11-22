@@ -6,7 +6,6 @@ app.use(express.json());
 
 let users = [];
 
-
 app.post('/usuarios', async (req, res) => {
     const conec = await conexao();
     const user = req.body;
@@ -35,10 +34,18 @@ app.delete('/usuarios/:id', async (req, res) => {
     res.status(204).send(`${user.nome} foi deletado com sucesso!`);
 });
 
-app.get('/usuarios', async (req, res) => {
+app.get('/usuarios/:id', async (req, res) => {
     const conec = await conexao();
     const users = await conec.query('SELECT * FROM user;');
     res.status(200).send(users[0]);
+});
+
+app.patch('/usuarios/:id', async (req, res) => {
+    const conec = await conexao();
+    const compos = Object.entries(req.body);
+    const query = 'UPDATE user SET' + campos.reduce((acc, curr) => acc + ',') + ' = ? WHERE id = ?;'
+    query = `UPDATE user SET` 
+
 });
 
 app.listen(3000);
